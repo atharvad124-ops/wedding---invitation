@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="mr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>मयुरी ♥ अभ्युदय — आमंत्रण (Advanced)</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;700&family=Baloo+2&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --accent:#c92a2a;
+    --accent-dark:#8b1c1c;
+    --muted:#6b6b6b;
+    --photo-height:420px; /* ← PHOTO HEIGHT बदलायचा असेल तर इथे value वाढवा/कम्म करा (px) */
+    --card-radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:"Noto Sans Devanagari", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    background:#fffaf6;
+    color:#222;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* === Header golden Ganpati (top-left) === */
+  .site-header {
+    position:relative;
+    height:84px;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    background:transparent;
+  }
+  .ganpati {
+    position:absolute;
+    top:12px;
+    left:12px;
+    width:68px;
+    height:68px;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 6px 18px rgba(0,0,0,.12);
+    background:linear-gradient(135deg,#fff7e6,#fff0d9);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:6px;
+  }
+  .ganpati img{ width:100%; height:100%; object-fit:contain; }
+
+  .site-title{
+    font-family:"Baloo 2";
+    font-size:28px;
+    margin-top:10px;
+    color:var(--accent-dark);
+    text-align:center;
+  }
+  .site-sub{
+    text-align:center;
+    color:#8a2b2b;
+    font-size:15px;
+    margin-top:4px;
+    opacity:.95;
+  }
+
+  /* === HERO (background couple photo slideshow) === */
+  .hero{
+    position:relative;
+    height:56vh;
+    min-height:420px;
+    overflow:hidden;
+    border-bottom-left-radius:18px;
+    border-bottom-right-radius:18px;
+  }
+  .hero .bg{
+    position:absolute;
+    inset:0;
+    background-size:cover;
+    background-position:center;
+    filter:brightness(.55) blur(.6px);
+    transform:scale(1.02);
+    transition:opacity .9s ease;
+    opacity:0;
+  }
+  .hero .bg.visible{ opacity:1; }
+
+  .hero .overlay{
+    position:absolute;
+    bottom:24px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:6;
+    text-align:center;
+    width:100%;
+    padding:0 20px;
+  }
+  .hero h1{
+    margin:0;
+    font-family:"Baloo 2";
+    font-size:44px;
+    color:#fff;
+    text-shadow:0 8px 30px rgba(0,0,0,.55);
+    line-height:1.05;
+  }
+  .hero h2{
+    margin:8px 0 0;
+    color:#ffe7e7;
+    font-size:18px;
+    text-shadow:0 6px 18px rgba(0,0,0,.45);
+  }
+
+  /* small subtitle */
+  .hero .subtitle{
+    margin-top:10px;
+    color:#fff8f8;
+    opacity:.9;
+    max-width:760px;
+    margin-left:auto;
+    margin-right:auto;
+    font-size:16px;
+  }
+
+  /* audio controls + toggle */
+  .audio-wrap{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    margin:18px 16px;
+  }
+  .audio-wrap audio{ width:min(820px,96%); border-radius:12px; padding:8px; background:#fff; box-shadow:0 6px 20px rgba(0,0,0,.06); }
+
+  .audio-toggle{
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    background:#fff;
+    border-radius:10px;
+    padding:8px 12px;
+    box-shadow:0 6px 16px rgba(0,0,0,.06);
+    cursor:pointer;
+    font-weight:600;
+    color:var(--accent-dark);
+  }
+
+  /* Profiles grid */
+  .profiles{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:18px;
+    max-width:1200px;
+    margin:26px auto;
+    padding:0 16px 26px;
+  }
+
+  /* Photo box (with heading on top of photo) */
+  .photo-box{
+    position:relative;
+    background:#fff;
+    border-radius:var(--card-radius);
+    overflow:visible;
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+  }
+  .photo-box .photo {
+    display:block;
+    width:100%;
+    height:var(--photo-height); /* controlled by root var */
+    object-fit:cover;
+    border-top-left-radius:var(--card-radius);
+    border-top-right-radius:var(--card-radius);
+    transition:transform .6s cubic-bezier(.2,.9,.2,1), box-shadow .3s;
+  }
+  .photo-box:hover .photo{ transform:scale(1.03); box-shadow:0 16px 40px rgba(0,0,0,.12); }
+
+  .photo-heading{
+    position:absolute;
+    top:14px;
+    left:50%;
+    transform:translateX(-50%);
+    background:linear-gradient(90deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35));
+    padding:8px 18px;
+    border-radius:30px;
+    color:#fff;
+    font-weight:700;
+    font-size:20px;
+    backdrop-filter: blur(4px);
+    box-shadow:0 6px 18px rgba(0,0,0,.18);
+  }
+
+  .photo-caption{
+    padding:14px 16px 18px;
+    text-align:center;
+  }
+  .photo-caption h3{
+    margin:6px 0 4px;
+    font-family:"Baloo 2";
+    font-size:22px;
+    color:var(--accent);
+  }
+  .photo-caption p{ margin:0; color:var(--muted); font-size:15px; }
+
+  /* Countdown */
+  .countdown-wrap{
+    max-width:1000px;
+    margin:6px auto 28px;
+    text-align:center;
+    padding:12px 16px;
+  }
+  .circles{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    justify-items:center;
+    align-items:center;
+  }
+  .circle{
+    width:140px; height:140px;
+    border-radius:50%;
+    border:6px solid var(--accent);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(0deg,#fff5f5 55%, #fff 55%);
+    box-shadow:0 8px 26px rgba(0,0,0,.07);
+  }
+  .circle .num{ font-size:38px; font-weight:800; font-family:"Baloo 2"; color:#4b1f1f; }
+  .circle .lbl{ font-size:14px; color:#111; margin-top:6px; }
+
+  /* Gallery simple */
+  .gallery{
+    max-width:1100px;
+    margin:22px auto 40px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:10px;
+    padding:0 16px 24px;
+  }
+  .gallery img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,.06);
+    cursor:pointer;
+  }
+
+  /* programs */
+  .programs{ max-width:980px; margin:0 auto 60px; padding:0 16px; }
+  .program { margin-bottom:14px; border-radius:12px; overflow:hidden; }
+  .panel{ padding:20px; color:#fff; text-align:center; }
+  .panel.yellow{ background:#ffd54f; color:#3b2b00; }
+  .panel.red{ background:#d32f2f; }
+  .panel.purple{ background:#5e35b1; }
+
+  footer{ text-align:center; padding:28px 12px; color:#666; }
+
+  /* responsive tweaks */
+  @media (max-width:900px){
+    .hero h1{ font-size:34px; }
+    .hero{ min-height:360px; }
+    :root{ --photo-height:360px; }
+  }
+  @media (max-width:600px){
+    .hero h1{ font-size:28px; }
+    :root{ --photo-height:300px; }
+    .circles{ grid-template-columns:repeat(2,1fr); }
+  }
+
+  /* small utility */
+  .center{ text-align:center; }
+</style>
+</head>
+<body>
+
+  <!-- Header with Ganpati (top-left) -->
+  <header class="site-header">
+    <div class="ganpati">
+      <!-- replace the src with your golden ganpati image (png/svg recommended) -->
+      <img src="https://drive.google.com/uc?export=view&id=11xZ_vdMr7aaaU_Zy3BPdzaaFV7nCQZ-8" alt="Ganpati">
+    </div>
+
+    <div>
+      <div class="site-title"></div>
+      <div class="site-sub"></div>
+    </div>
+  </header>
+
+  <!-- HERO with background slideshow -->
+  <section class="hero" aria-label="Hero">
+    <div class="bg visible" id="heroBg0" style="background-image:url('https://drive.google.com/uc?export=view&id=1y1unlYDcWy5wuo3pSGbTxZSWLEeyNpvV');"></div>
+    <div class="bg" id="heroBg1" style="background-image:url('https://drive.google.com/uc?export=view&id=1y1unlYDcWy5wuo3pSGbTxZSWLEeyNpvV');"></div>
+
+    <div class="overlay">
+      <h1> मयुरी  <span style="color:#ffd6d6;">♥</span>   अभ्युदय</h1>
+      <h2>|| यांचा शुभ विवाह ||</h2>
+      <div class="subtitle">आपल्या स्नेह व आशीर्वादाने या मंगलसमारंभाला मंगलमय करा</div>
+    </div>
+  </section>
+
+  <!-- Audio controls with autoplay toggle -->
+  <div class="audio-wrap center">
+    <audio id="wAudio" controls preload="auto" playsinline>
+      <!-- replace with your audio file id/download link -->
+      <source src="https://drive.google.com/file/d/1KU3XMdxWTO32HDQGIcik5zmixQ9y673S" type="audio/mpeg">
+    
+    </audio>
+
+    <div id="audioBtn" class="audio-toggle" title="Play / Pause">
+      ▶ Play
+    </div>
+  </div>
+
+  <!-- Profiles (Bride / Groom) -->
+  <section class="profiles">
+
+    <!-- Bride -->
+    <article class="photo-box">
+      <img class="photo" src="https://drive.google.com/uc?export=view&id=1cXc0MEgEG8d_vtj7KVYHCaE2VMdcBPNE" alt="मयुरी - वधू">
+      <div class="photo-heading"></div>
+      <div class="photo-caption">
+        <h3>चि. सौ. कां. मयुरी उर्फ वेदांशी</h3>
+        <p>B.Tech E&TC <p>
+<p> सौ.हरिदीनीताई व श्री उमेशराव तुकारामजी दामोधर रा. कावसा ह.मु.मोठी उमरी, अकोला,यांची सुकन्या</p>
+      </div>
+    </article>
+
+    <!-- Groom -->
+    <article class="photo-box">
+      <img class="photo" src="https://drive.google.com/uc?export=view&id=1JKUL78zSlKCHdUUzqgnsTaNGUL2qUOeN" alt="अभ्युदय - वर">
+      <div class="photo-heading"> </div>
+      <div class="photo-caption">
+        <h3>चि. अभ्युदय  (पियुष)</h3>
+        <p>B.E Comp.sic. C.DAC </p>
+         <p> सौ. अलकाताई व श्री सुभाषराव रामदासजी घटाळे रा.अचलपुर ह.मू. फ्रेंडस् कॉलनी, वि.म.वि.रोड, अमरावती, यांचे ज्येष्ठ चिरंजीव <p>
+    </div>
+    </article>
+
+  </section>
+
+  <!-- Countdown -->
+  <section class="countdown-wrap">
+    <div class="center" style="margin-bottom:8px;"><strong style="font-family:Baloo 2; font-size:28px; color:var(--accent);">आतुरता लग्नाची</strong></div>
+    <div class="circles" id="countdown">
+      <div class="circle"><div class="num" id="days">0</div><div class="lbl">Days</div></div>
+      <div class="circle"><div class="num" id="hours">00</div><div class="lbl">Hours</div></div>
+      <div class="circle"><div class="num" id="mins">00</div><div class="lbl">Minutes</div></div>
+      <div class="circle"><div class="num" id="secs">00</div><div class="lbl">Seconds</div></div>
+    </div>
+  </section>
+
+ <!-- Gallery -->
+  <section class="gallery" aria-label="Photos">
+<div class="center" style="margin-bottom:8px;"><strong style="font-family:Baloo 2; font-size:28px; color:var(--accent);">सुवर्ण क्षण</strong></div>
+    <img src="https://drive.google.com/uc?export=view&id=1y1unlYDcWy5wuo3pSGbTxZSWLEeyNpvV" alt="image" style="width:100%; max-width:300px;">
+    <img src="https://drive.google.com/uc?export=view&id=1DvCWiACHpxK8jHcB3ecYAwfYJ24yvKte" alt="image" style="width:100%; max-width:300px;">
+    <img src="https://drive.google.com/uc?export=view&id=1ci3_fF_-YvpGEXmqM3uYHOWr29g5CVkx" alt="image" style="width:100%; max-width:300px;">
+    <img src="https://drive.google.com/uc?export=view&id=/1AsjUX1A9JeiTD2FXqWyS_aeK7L6jkiEi" alt="image" style="width:100%; max-width:300px;">
+  </section>
+
+  <!-- Programs -->
+  <section class="programs">
+    <div class="program">
+      <div class="panel yellow">
+        <h4>|| हळद समारंभ ||</h4>
+        <p>सोमवार ०१/१२/२०१५ — सकाळी ११:०० वाजता</p>
+         <p>आमचे राहते घरी मोठी उमरी अकोला<p>
+      </div>
+    </div>
+
+    <div class="program">
+      <div class="panel red">
+        <h4>|| शुभ विवाह ||</h4>
+        <p> (शुभ मुहूर्त) <p>
+<p>श्री शके १९४७ मिती मार्गशीर्ष शु. व्दादशी</p>
+  <p>02/12/2025 — दुपारी 12:21<p>
+      <a href="https://maps.app.goo.gl/wJmar2fRo9ASdiSY6" target="_blank" style="color:#fff; text-decoration:underline;">📍view location</a>
+      </div>
+    </div>
+
+    <div class="program">
+      <div class="panel purple">
+        <h4>|| स्नेहभोजन (Reception) ||</h4>
+        <p>03/12/2025 — सायंकाळी 07:00</p>
+        <a href="https://maps.app.goo.gl/i5fYDmVemEqDXs8G6" target="_blank" style="color:#fff; text-decoration:underline;">📍view location</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+   Copyright © <strong>2025 Digital Nimantran</strong> 
+mob 7558365298
+  </footer>
+
+<script>
+  // ===== Hero slideshow (fade) =====
+  const heroIds = ['heroBg0','heroBg1'];
+  let hIdx = 0;
+  setInterval(()=>{
+    const prev = hIdx;
+    hIdx = (hIdx+1) % heroIds.length;
+    document.getElementById(heroIds[prev]).classList.remove('visible');
+    document.getElementById(heroIds[hIdx]).classList.add('visible');
+  }, 8000);
+
+  // ===== Countdown =====
+  // Note: month index is zero-based: 11 -> December
+  const weddingDate = new Date(2025,11,2,12,21,0);
+  function updateCountdown(){
+    const now = new Date();
+    let diff = Math.max(0, weddingDate - now);
+    const sec = Math.floor(diff/1000) % 60;
+    const min = Math.floor(diff/1000/60) % 60;
+    const hrs = Math.floor(diff/1000/60/60) % 24;
+    const days = Math.floor(diff/1000/60/60/24);
+    document.getElementById('days').textContent = days;
+    document.getElementById('hours').textContent = String(hrs).padStart(2,'0');
+    document.getElementById('mins').textContent = String(min).padStart(2,'0');
+    document.getElementById('secs').textContent = String(sec).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown,1000);
+
+  // ===== Audio Play/Pause toggle (and autoplay attempt) =====
+  const audio = document.getElementById('wAudio');
+  const audioBtn = document.getElementById('audioBtn');
+
+  function setAudioBtn(){
+    if(!audio) return;
+    audioBtn.textContent = audio.paused ? '▶ Play' : '⏸ Pause';
+  }
+
+  audioBtn.addEventListener('click', ()=> {
+    if(audio.paused){ 
+      audio.play().catch(()=>{}); 
+    } else { 
+      audio.pause(); 
+    }
+    setAudioBtn();
+  });
+
+  // try autoplay (many browsers block autoplay with sound)
+  window.addEventListener('load', ()=>{
+    audio.play().then(()=> setAudioBtn() ).catch(()=> setAudioBtn());
+  });
+
+  // ===== Lightbox-simple for gallery (basic) =====
+  const galleryImgs = document.querySelectorAll('.gallery img');
+  galleryImgs.forEach(img=>{
+    img.addEventListener('click', ()=>{
+      const overlay = document.createElement('div');
+      overlay.style.position='fixed';
+      overlay.style.inset=0;
+      overlay.style.background='rgba(0,0,0,.85)';
+      overlay.style.display='flex';
+      overlay.style.alignItems='center';
+      overlay.style.justifyContent='center';
+      overlay.style.zIndex=9999;
+      overlay.addEventListener('click', ()=> overlay.remove());
+      const big = document.createElement('img');
+      big.src = img.src;
+      big.style.maxWidth='95%';
+      big.style.maxHeight='90%';
+      big.style.boxShadow='0 18px 60px rgba(0,0,0,.6)';
+      big.style.borderRadius='8px';
+      overlay.appendChild(big);
+      document.body.appendChild(overlay);
+    });
+  });
+
+  // ===== Helpful note: change photo height by editing --photo-height in :root =====
+  console.log("To change Bride/Groom photo height, edit the CSS root variable --photo-height (default px).");
+
+</script>
+
+</body>
+</html>
